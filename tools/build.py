@@ -78,7 +78,9 @@ def tag(nm):
     out = esc(nm)
     if p: out += f' <span class="rk">{LETTERS[p[0]]}{p[1]+1}</span>'
     if nm in SENIORS: out += ' <span class="sr">SR</span>'
-    return out
+    # one atomic unit — a player's name, rank, and SR never wrap apart;
+    # two-man cells can only break at the & between partners
+    return f'<span class="player">{out}</span>'
 
 def gam_foot(key):
     g = GAM.get(key, {})
