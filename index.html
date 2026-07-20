@@ -21,16 +21,38 @@
     --paper:#eef0e6;
     --head-bg:#f2efe3;
     --row-alt:#faf8ef;
+    --sheet:#fff;
+    --muted:#444;
+    --tag:#8a8467;
+    --num:#9a2c1e;
+    --bar:rgba(238,240,230,.94);
+  }
+  /* dark mode — light is the default, toggled by the button up top */
+  html.dark{
+    --ink:#e6e3d5;
+    --fair:#7db08f;
+    --gold:#c9a558;
+    --red:#d08e79;
+    --line:#4a4f42;
+    --line-soft:#343931;
+    --paper:#171b17;
+    --head-bg:#2a3128;
+    --row-alt:#242b23;
+    --sheet:#20261f;
+    --muted:#b3ae9d;
+    --tag:#a29c84;
+    --num:#d08e79;
+    --bar:rgba(23,27,23,.92);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:Georgia,"Times New Roman",serif;background:var(--paper);color:var(--ink);line-height:1.45}
 
-  /* ===== top action bar ===== */
+  /* ===== top action bar — fixed so it never scrolls away ===== */
   .actions{
-    position:sticky;top:0;z-index:10;
+    position:fixed;top:0;left:0;right:0;z-index:10;
     display:flex;justify-content:center;flex-wrap:wrap;gap:8px;
     padding:10px 12px;
-    background:rgba(238,240,230,.94);
+    background:var(--bar);
     border-bottom:1px solid var(--line);
     -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
   }
@@ -46,13 +68,16 @@
     background:#fff8e4;border:1px solid var(--gold);border-radius:3px;
     padding:10px 14px;font-size:14px;font-style:italic;color:#6b5420;
   }
+  html.dark .ios-how{background:#2e2a1c;color:#d8c58c}
   .ios-how.show{display:block}
 
   /* ===== the sheet ===== */
-  .sheet{max-width:860px;margin:16px auto 40px;background:#fff;padding:28px 20px 32px;border:1px solid var(--line);border-radius:4px}
+  .sheet{max-width:860px;margin:16px auto 40px;background:var(--sheet);padding:28px 20px 32px;border:1px solid var(--line);border-radius:4px}
   @media(min-width:600px){.sheet{padding:36px 36px 40px}}
   .masthead{text-align:center;padding-bottom:10px;border-bottom:3px double var(--fair);margin-bottom:14px}
   .masthead img{width:min(320px,70%);height:auto}
+  /* the logo art is dark — give it a light chip so it survives dark mode */
+  html.dark .masthead img{background:#f5f2e8;padding:10px 14px;border-radius:6px}
   .masthead .sub{
     font-family:Verdana,sans-serif;font-size:11px;letter-spacing:.3em;text-transform:uppercase;
     color:var(--fair);margin-top:8px;
@@ -69,7 +94,7 @@
     padding:12px 0 4px;margin-bottom:8px;
     display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;
   }
-  .daykey{font-weight:normal;letter-spacing:.08em;font-size:11px;color:#444;text-transform:none;white-space:nowrap}
+  .daykey{font-weight:normal;letter-spacing:.08em;font-size:11px;color:var(--muted);text-transform:none;white-space:nowrap}
   .sr{font-family:Verdana,sans-serif;font-size:10px;font-weight:bold;color:var(--gold);letter-spacing:.05em;white-space:nowrap}
 
   .event{border:1px solid var(--line);border-radius:4px;margin-bottom:10px;overflow:hidden}
@@ -78,22 +103,22 @@
     background:var(--head-bg);border-bottom:1px solid var(--line);padding:8px 14px;
   }
   .ename{font-size:17px;font-weight:bold;color:var(--fair)}
-  .holes{font-family:Verdana,sans-serif;font-size:10px;font-weight:normal;color:#8a8467;letter-spacing:.05em;white-space:nowrap}
-  .time{font-family:Verdana,sans-serif;font-size:12px;letter-spacing:.1em;color:#444;white-space:nowrap}
-  .details{font-size:14px;font-style:italic;color:#444;padding:7px 14px;border-bottom:1px solid var(--line-soft)}
+  .holes{font-family:Verdana,sans-serif;font-size:10px;font-weight:normal;color:var(--tag);letter-spacing:.05em;white-space:nowrap}
+  .time{font-family:Verdana,sans-serif;font-size:12px;letter-spacing:.1em;color:var(--muted);white-space:nowrap}
+  .details{font-size:14px;font-style:italic;color:var(--muted);padding:7px 14px;border-bottom:1px solid var(--line-soft)}
 
   .tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
   table{width:100%;border-collapse:collapse;font-size:15px;min-width:540px}
   td,th{padding:6px 12px;text-align:left;vertical-align:top}
   tbody tr:nth-child(even){background:var(--row-alt)}
   tbody tr+tr td{border-top:1px solid var(--line-soft)}
-  td.num{font-family:Verdana,sans-serif;font-size:11px;color:#9a2c1e;width:34px;white-space:nowrap}
-  .rk{font-family:Verdana,sans-serif;font-size:9px;color:#8a8467;letter-spacing:.05em;white-space:nowrap}
+  td.num{font-family:Verdana,sans-serif;font-size:11px;color:var(--num);width:34px;white-space:nowrap}
+  .rk{font-family:Verdana,sans-serif;font-size:9px;color:var(--tag);letter-spacing:.05em;white-space:nowrap}
   .roomies table, .ranks-note{min-width:0}
 
   .gam{border-top:1px solid var(--line-soft);padding:7px 14px;display:flex;gap:12px;align-items:baseline}
   .buyin{font-family:Verdana,sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--red);white-space:nowrap}
-  .gamdet{flex:1;font-size:14px;font-style:italic;color:#444}
+  .gamdet{flex:1;font-size:14px;font-style:italic;color:var(--muted)}
   .total{
     text-align:right;font-family:Verdana,sans-serif;font-size:12px;font-weight:bold;
     letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin:8px 2px 0;
@@ -122,6 +147,7 @@
   <button class="abtn" id="installBtn">Add to Home Screen</button>
   <a class="abtn" href="assets/locigno-outing.pdf" download>Download PDF</a>
   <a class="abtn" href="assets/locigno-outing.xlsx" download>Download Spreadsheet</a>
+  <button class="abtn" id="themeBtn">Dark Mode</button>
 </div>
 <div class="ios-how" id="iosHow">On iPhone: open this page in <b>Safari</b>, tap the <b>Share</b> button, then choose <b>&ldquo;Add to Home Screen.&rdquo;</b></div>
 
@@ -274,6 +300,26 @@
 <footer>Cross Creek 2026</footer>
 
 <script>
+/* ===== the bar is fixed, so the page starts below it ===== */
+const bar = document.querySelector(".actions");
+function padBar(){ document.body.style.paddingTop = bar.offsetHeight + "px"; }
+padBar();
+addEventListener("resize", padBar);
+
+/* ===== dark mode — light by default, remembered per device ===== */
+const themeBtn = document.getElementById("themeBtn");
+const themeMeta = document.querySelector('meta[name="theme-color"]');
+function setTheme(dark){
+  document.documentElement.classList.toggle("dark", dark);
+  themeBtn.textContent = dark ? "Light Mode" : "Dark Mode";
+  themeMeta.content = dark ? "#171b17" : "#1e3a2f";
+  try{ localStorage.setItem("theme", dark ? "dark" : "light"); }catch(e){}
+}
+let saved = null;
+try{ saved = localStorage.getItem("theme"); }catch(e){}
+setTheme(saved === "dark");
+themeBtn.addEventListener("click", () => setTheme(!document.documentElement.classList.contains("dark")));
+
 /* ===== add to home screen ===== */
 let deferredPrompt = null;
 const installBtn = document.getElementById("installBtn");
