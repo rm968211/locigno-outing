@@ -9,7 +9,8 @@ printed pairings sheet. Hosted on GitHub Pages; installable to a phone's home sc
    Each event is one `.event` card: the header holds the name, `(x holes)`, and the tee time;
    the table rows hold the groups; the `.gam` footer holds the buy-in and details.
    Seniors get ` <span class="sr">SR</span>` after their rank tag.
-   The current tables are **sample data** from the default roster.
+   The page can also be regenerated from a Toolkit spreadsheet's embedded save data —
+   the current content came from `JeffsPairings.xlsx` (Cross creek 2026, iCloud Drive).
 2. **The downloads** — replace the two files in `assets/`:
    - `assets/locigno-outing.pdf` — the formatted PDF from the Commissioners Toolkit
    - `assets/locigno-outing.xlsx` — the spreadsheet from the Commissioners Toolkit
