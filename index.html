@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Locigno Outing — Pairings &amp; Tee Times</title>
+<meta name="description" content="Cross Creek Locigno Outing — pairings, groups, and tee times">
+<meta name="theme-color" content="#1e3a2f">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Outing">
+<style>
+  :root{
+    --ink:#1c1c1c;
+    --fair:#2f6b45;
+    --gold:#a8843c;
+    --red:#7a2f22;
+    --line:#c9c4b4;
+    --line-soft:#e2ddcb;
+    --paper:#eef0e6;
+    --head-bg:#f2efe3;
+    --row-alt:#faf8ef;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Georgia,"Times New Roman",serif;background:var(--paper);color:var(--ink);line-height:1.45}
+
+  /* ===== top action bar ===== */
+  .actions{
+    position:sticky;top:0;z-index:10;
+    display:flex;justify-content:center;flex-wrap:wrap;gap:8px;
+    padding:10px 12px;
+    background:rgba(238,240,230,.94);
+    border-bottom:1px solid var(--line);
+    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  }
+  .abtn{
+    font-family:Verdana,sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    background:var(--fair);color:#fff;border:none;border-radius:3px;
+    padding:10px 16px;cursor:pointer;text-decoration:none;display:inline-block;
+    box-shadow:0 2px 0 #1e4a2f;
+  }
+  .abtn:active{transform:translateY(1px);box-shadow:none}
+  .ios-how{
+    display:none;max-width:820px;margin:10px auto 0;
+    background:#fff8e4;border:1px solid var(--gold);border-radius:3px;
+    padding:10px 14px;font-size:14px;font-style:italic;color:#6b5420;
+  }
+  .ios-how.show{display:block}
+
+  /* ===== the sheet ===== */
+  .sheet{max-width:860px;margin:16px auto 40px;background:#fff;padding:28px 20px 32px;border:1px solid var(--line);border-radius:4px}
+  @media(min-width:600px){.sheet{padding:36px 36px 40px}}
+  .masthead{text-align:center;padding-bottom:10px;border-bottom:3px double var(--fair);margin-bottom:14px}
+  .masthead img{width:min(320px,70%);height:auto}
+  .masthead .sub{
+    font-family:Verdana,sans-serif;font-size:11px;letter-spacing:.3em;text-transform:uppercase;
+    color:var(--fair);margin-top:8px;
+  }
+
+  .title{
+    font-family:Verdana,sans-serif;font-size:13px;font-weight:bold;letter-spacing:.25em;
+    text-transform:uppercase;color:#fff;background:var(--fair);
+    padding:7px 14px;border-radius:2px;margin-top:22px;
+  }
+  .day{
+    font-family:Verdana,sans-serif;font-size:12px;font-weight:bold;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--fair);border-bottom:2px solid var(--fair);
+    padding:12px 0 4px;margin-bottom:8px;
+    display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;
+  }
+  .daykey{font-weight:normal;letter-spacing:.08em;font-size:11px;color:#444;text-transform:none;white-space:nowrap}
+  .sr{font-family:Verdana,sans-serif;font-size:10px;font-weight:bold;color:var(--gold);letter-spacing:.05em;white-space:nowrap}
+
+  .event{border:1px solid var(--line);border-radius:4px;margin-bottom:10px;overflow:hidden}
+  .ehead{
+    display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+    background:var(--head-bg);border-bottom:1px solid var(--line);padding:8px 14px;
+  }
+  .ename{font-size:17px;font-weight:bold;color:var(--fair)}
+  .holes{font-family:Verdana,sans-serif;font-size:10px;font-weight:normal;color:#8a8467;letter-spacing:.05em;white-space:nowrap}
+  .time{font-family:Verdana,sans-serif;font-size:12px;letter-spacing:.1em;color:#444;white-space:nowrap}
+  .details{font-size:14px;font-style:italic;color:#444;padding:7px 14px;border-bottom:1px solid var(--line-soft)}
+
+  .tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{width:100%;border-collapse:collapse;font-size:15px;min-width:540px}
+  td,th{padding:6px 12px;text-align:left;vertical-align:top}
+  tbody tr:nth-child(even){background:var(--row-alt)}
+  tbody tr+tr td{border-top:1px solid var(--line-soft)}
+  td.num{font-family:Verdana,sans-serif;font-size:11px;color:#9a2c1e;width:34px;white-space:nowrap}
+  .rk{font-family:Verdana,sans-serif;font-size:9px;color:#8a8467;letter-spacing:.05em;white-space:nowrap}
+  .roomies table, .ranks-note{min-width:0}
+
+  .gam{border-top:1px solid var(--line-soft);padding:7px 14px;display:flex;gap:12px;align-items:baseline}
+  .buyin{font-family:Verdana,sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--red);white-space:nowrap}
+  .gamdet{flex:1;font-size:14px;font-style:italic;color:#444}
+  .total{
+    text-align:right;font-family:Verdana,sans-serif;font-size:12px;font-weight:bold;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin:8px 2px 0;
+  }
+
+  .ranks{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:8px}
+  @media(max-width:700px){.ranks{grid-template-columns:repeat(2,1fr)}}
+  .rankcol{border:1px solid var(--line);border-radius:4px;overflow:hidden}
+  .rankcol h4{
+    font-family:Verdana,sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--fair);background:var(--head-bg);border-bottom:1px solid var(--line);padding:6px 10px;
+  }
+  .rankcol ol{margin:0;padding:6px 10px 8px 32px;font-size:14px}
+  .rankcol li{padding:2px 0}
+
+  footer{
+    max-width:860px;margin:0 auto 30px;padding-top:8px;border-top:1px solid var(--line);
+    text-align:center;font-family:Verdana,sans-serif;font-size:10px;letter-spacing:.2em;
+    text-transform:uppercase;color:#999;
+  }
+</style>
+</head>
+<body>
+
+<div class="actions">
+  <button class="abtn" id="installBtn">Add to Home Screen</button>
+  <a class="abtn" href="assets/locigno-outing.pdf" download>Download PDF</a>
+  <a class="abtn" href="assets/locigno-outing.xlsx" download>Download Spreadsheet</a>
+</div>
+<div class="ios-how" id="iosHow">On iPhone: open this page in <b>Safari</b>, tap the <b>Share</b> button, then choose <b>&ldquo;Add to Home Screen.&rdquo;</b></div>
+
+<div class="sheet">
+
+  <div class="masthead">
+    <img src="assets/cross-creek-logo.png" alt="Cross Creek">
+    <!-- EDIT: the year -->
+    <div class="sub">Locigno Outing 2026 &middot; Pairings &amp; Tee Times</div>
+  </div>
+
+  <div class="title">Pairings</div>
+
+  <!-- ============================ SUNDAY ============================ -->
+  <div class="day"><span>Sunday</span><span class="daykey"><span class="sr">SR</span> = plays the senior tees</span></div>
+
+  <!-- EDIT: two-man teams below; the time sits at the right of the header -->
+  <div class="event">
+    <div class="ehead"><span class="ename">Two-Man Scramble <span class="holes">(9 holes)</span></span><span class="time">8:30 AM</span></div>
+    <div class="tscroll"><table>
+      <tbody>
+      <tr><td class="num">1</td><td>Zeke Deflorio <span class="rk">A1</span> &amp; Doug Bennett <span class="rk">B1</span></td><td>Dave Powers <span class="rk">C1</span> &amp; Fletcher Stevens <span class="rk">D1</span></td></tr>
+      <tr><td class="num">2</td><td>John Baucco <span class="rk">A2</span> &amp; Mike Bregitzer <span class="rk">B2</span></td><td>Jason Salerno <span class="rk">C2</span> &amp; Jeff Myers Jr. <span class="rk">D2</span></td></tr>
+      <tr><td class="num">3</td><td>Shawn McWilliams <span class="rk">A3</span> &amp; Alan Scott <span class="rk">B3</span></td><td>Nate Stevens <span class="rk">C3</span> &amp; John Locigno <span class="rk">D3</span></td></tr>
+      <tr><td class="num">4</td><td>Ryan Weed <span class="rk">A4</span> &amp; Don Andrews <span class="rk">B4</span></td><td>Bret Traylor <span class="rk">C4</span> &amp; Jim Brown <span class="rk">D4</span></td></tr>
+      <tr><td class="num">5</td><td>Ryan Miers <span class="rk">A5</span> &amp; Frank Skully <span class="rk">B5</span></td><td>Justin Myers <span class="rk">C5</span> &amp; George Hahn <span class="rk">D5</span></td></tr>
+      <tr><td class="num">6</td><td>Denny Miers <span class="rk">A6</span> <span class="sr">SR</span> &amp; Bud Deflorio <span class="rk">B6</span> <span class="sr">SR</span></td><td>Brad Sala <span class="rk">C6</span> &amp; JAM <span class="rk">D6</span></td></tr>
+      <tr><td class="num">7</td><td>Joe Locigno <span class="rk">A7</span> &amp; Chris Palmeri <span class="rk">B7</span></td><td>Pat Bruckman <span class="rk">C7</span> &amp; Ross Locigno <span class="rk">D7</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="gam"><span class="buyin">$20 buy-in</span><div class="gamdet">Payouts at the bar Sunday night</div></div>
+  </div>
+
+  <div class="event">
+    <div class="ehead"><span class="ename">Slivo Scramble <span class="holes">(18 holes)</span></span></div>
+    <div class="tscroll"><table>
+      <tbody>
+      <tr><td class="num">1</td><td>Zeke Deflorio <span class="rk">A1</span></td><td>Mike Bregitzer <span class="rk">B2</span></td><td>Nate Stevens <span class="rk">C3</span></td><td>Jim Brown <span class="rk">D4</span></td></tr>
+      <tr><td class="num">2</td><td>John Baucco <span class="rk">A2</span></td><td>Alan Scott <span class="rk">B3</span></td><td>Bret Traylor <span class="rk">C4</span></td><td>George Hahn <span class="rk">D5</span></td></tr>
+      <tr><td class="num">3</td><td>Shawn McWilliams <span class="rk">A3</span></td><td>Don Andrews <span class="rk">B4</span></td><td>Justin Myers <span class="rk">C5</span></td><td>JAM <span class="rk">D6</span></td></tr>
+      <tr><td class="num">4</td><td>Ryan Weed <span class="rk">A4</span></td><td>Frank Skully <span class="rk">B5</span></td><td>Brad Sala <span class="rk">C6</span></td><td>Ross Locigno <span class="rk">D7</span></td></tr>
+      <tr><td class="num">5</td><td>Ryan Miers <span class="rk">A5</span></td><td>Bud Deflorio <span class="rk">B6</span> <span class="sr">SR</span></td><td>Pat Bruckman <span class="rk">C7</span></td><td>Fletcher Stevens <span class="rk">D1</span></td></tr>
+      <tr><td class="num">6</td><td>Denny Miers <span class="rk">A6</span> <span class="sr">SR</span></td><td>Chris Palmeri <span class="rk">B7</span></td><td>Dave Powers <span class="rk">C1</span></td><td>Jeff Myers Jr. <span class="rk">D2</span></td></tr>
+      <tr><td class="num">7</td><td>Joe Locigno <span class="rk">A7</span></td><td>Doug Bennett <span class="rk">B1</span></td><td>Jason Salerno <span class="rk">C2</span></td><td>John Locigno <span class="rk">D3</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="gam"><span class="buyin">$20 buy-in</span></div>
+  </div>
+
+  <!-- ============================ MONDAY ============================ -->
+  <div class="day"><span>Monday</span></div>
+
+  <div class="event">
+    <div class="ehead"><span class="ename">6/6/6 Scramble <span class="holes">(18 holes)</span></span><span class="time">9:00 AM</span></div>
+    <div class="tscroll"><table>
+      <tbody>
+      <tr><td class="num">1</td><td>Zeke Deflorio <span class="rk">A1</span></td><td>Alan Scott <span class="rk">B3</span></td><td>Justin Myers <span class="rk">C5</span></td><td>Ross Locigno <span class="rk">D7</span></td></tr>
+      <tr><td class="num">2</td><td>John Baucco <span class="rk">A2</span></td><td>Don Andrews <span class="rk">B4</span></td><td>Brad Sala <span class="rk">C6</span></td><td>Fletcher Stevens <span class="rk">D1</span></td></tr>
+      <tr><td class="num">3</td><td>Shawn McWilliams <span class="rk">A3</span></td><td>Frank Skully <span class="rk">B5</span></td><td>Pat Bruckman <span class="rk">C7</span></td><td>Jeff Myers Jr. <span class="rk">D2</span></td></tr>
+      <tr><td class="num">4</td><td>Ryan Weed <span class="rk">A4</span></td><td>Bud Deflorio <span class="rk">B6</span> <span class="sr">SR</span></td><td>Dave Powers <span class="rk">C1</span></td><td>John Locigno <span class="rk">D3</span></td></tr>
+      <tr><td class="num">5</td><td>Ryan Miers <span class="rk">A5</span></td><td>Chris Palmeri <span class="rk">B7</span></td><td>Jason Salerno <span class="rk">C2</span></td><td>Jim Brown <span class="rk">D4</span></td></tr>
+      <tr><td class="num">6</td><td>Denny Miers <span class="rk">A6</span> <span class="sr">SR</span></td><td>Doug Bennett <span class="rk">B1</span></td><td>Nate Stevens <span class="rk">C3</span></td><td>George Hahn <span class="rk">D5</span></td></tr>
+      <tr><td class="num">7</td><td>Joe Locigno <span class="rk">A7</span></td><td>Mike Bregitzer <span class="rk">B2</span></td><td>Bret Traylor <span class="rk">C4</span></td><td>JAM <span class="rk">D6</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="gam"><span class="buyin">$20 buy-in</span></div>
+  </div>
+
+  <div class="event">
+    <div class="ehead"><span class="ename">White Tee Scramble <span class="holes">(18 holes)</span></span></div>
+    <div class="tscroll"><table>
+      <tbody>
+      <tr><td class="num">1</td><td>Zeke Deflorio <span class="rk">A1</span></td><td>Don Andrews <span class="rk">B4</span></td><td>Pat Bruckman <span class="rk">C7</span></td><td>John Locigno <span class="rk">D3</span></td></tr>
+      <tr><td class="num">2</td><td>John Baucco <span class="rk">A2</span></td><td>Frank Skully <span class="rk">B5</span></td><td>Dave Powers <span class="rk">C1</span></td><td>Jim Brown <span class="rk">D4</span></td></tr>
+      <tr><td class="num">3</td><td>Shawn McWilliams <span class="rk">A3</span></td><td>Bud Deflorio <span class="rk">B6</span> <span class="sr">SR</span></td><td>Jason Salerno <span class="rk">C2</span></td><td>George Hahn <span class="rk">D5</span></td></tr>
+      <tr><td class="num">4</td><td>Ryan Weed <span class="rk">A4</span></td><td>Chris Palmeri <span class="rk">B7</span></td><td>Nate Stevens <span class="rk">C3</span></td><td>JAM <span class="rk">D6</span></td></tr>
+      <tr><td class="num">5</td><td>Ryan Miers <span class="rk">A5</span></td><td>Doug Bennett <span class="rk">B1</span></td><td>Bret Traylor <span class="rk">C4</span></td><td>Ross Locigno <span class="rk">D7</span></td></tr>
+      <tr><td class="num">6</td><td>Denny Miers <span class="rk">A6</span> <span class="sr">SR</span></td><td>Mike Bregitzer <span class="rk">B2</span></td><td>Justin Myers <span class="rk">C5</span></td><td>Fletcher Stevens <span class="rk">D1</span></td></tr>
+      <tr><td class="num">7</td><td>Joe Locigno <span class="rk">A7</span></td><td>Alan Scott <span class="rk">B3</span></td><td>Brad Sala <span class="rk">C6</span></td><td>Jeff Myers Jr. <span class="rk">D2</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="gam"><span class="buyin">$20 buy-in</span><div class="gamdet">1st &ndash; $100 &middot; 2nd &ndash; $80 &middot; 3rd &ndash; $60 &middot; 4th &ndash; $40 &middot; Pins/Skins</div></div>
+  </div>
+
+  <!-- ============================ TUESDAY ============================ -->
+  <div class="day"><span>Tuesday</span></div>
+
+  <div class="event">
+    <div class="ehead"><span class="ename">Hangover Red Tee Scramble <span class="holes">(18 holes)</span></span><span class="time">9:30 AM</span></div>
+    <!-- EDIT: the Tuesday write-up -->
+    <div class="details">Pick Teams in the Bar Monday Night! Leading money winners 1&ndash;8 pick their team to win their trophy &mdash; serpentine order&hellip;</div>
+    <div class="gam"><span class="buyin">$20 buy-in</span><div class="gamdet">Same as Monday</div></div>
+  </div>
+
+  <!-- EDIT: the grand total -->
+  <div class="total">$100 total &mdash; all buy-ins, per player</div>
+
+  <!-- ============================ RANKINGS ============================ -->
+  <div class="title">Rankings</div>
+  <div class="ranks">
+      <div class="rankcol"><h4>A Players</h4><ol>
+        <li>Zeke Deflorio</li>
+        <li>John Baucco</li>
+        <li>Shawn McWilliams</li>
+        <li>Ryan Weed</li>
+        <li>Ryan Miers</li>
+        <li>Denny Miers</li>
+        <li>Joe Locigno</li>
+      </ol></div>
+      <div class="rankcol"><h4>B Players</h4><ol>
+        <li>Doug Bennett</li>
+        <li>Mike Bregitzer</li>
+        <li>Alan Scott</li>
+        <li>Don Andrews</li>
+        <li>Frank Skully</li>
+        <li>Bud Deflorio</li>
+        <li>Chris Palmeri</li>
+      </ol></div>
+      <div class="rankcol"><h4>C Players</h4><ol>
+        <li>Dave Powers</li>
+        <li>Jason Salerno</li>
+        <li>Nate Stevens</li>
+        <li>Bret Traylor</li>
+        <li>Justin Myers</li>
+        <li>Brad Sala</li>
+        <li>Pat Bruckman</li>
+      </ol></div>
+      <div class="rankcol"><h4>D Players</h4><ol>
+        <li>Fletcher Stevens</li>
+        <li>Jeff Myers Jr.</li>
+        <li>John Locigno</li>
+        <li>Jim Brown</li>
+        <li>George Hahn</li>
+        <li>JAM</li>
+        <li>Ross Locigno</li>
+      </ol></div>
+  </div>
+
+  <!-- ============================ ROOMIES ============================ -->
+  <div class="title" style="margin-bottom:8px">Roomies</div>
+  <div class="event roomies">
+    <table>
+      <tbody>
+      <tr><td class="num">1</td><td>Zeke Deflorio</td><td>John Baucco</td></tr>
+      <tr><td class="num">2</td><td>Shawn McWilliams</td><td>Ryan Weed</td></tr>
+      <tr><td class="num">3</td><td>Ryan Miers</td><td>Denny Miers</td></tr>
+      <tr><td class="num">4</td><td>Joe Locigno</td><td>Doug Bennett</td></tr>
+      <tr><td class="num">5</td><td>Mike Bregitzer</td><td>Alan Scott</td></tr>
+      <tr><td class="num">6</td><td>Don Andrews</td><td>Frank Skully</td></tr>
+      <tr><td class="num">7</td><td>Bud Deflorio</td><td>Chris Palmeri</td></tr>
+      <tr><td class="num">8</td><td>Dave Powers</td><td>Jason Salerno</td></tr>
+      <tr><td class="num">9</td><td>Nate Stevens</td><td>Bret Traylor</td></tr>
+      <tr><td class="num">10</td><td>Justin Myers</td><td>Brad Sala</td></tr>
+      <tr><td class="num">11</td><td>Pat Bruckman</td><td>Fletcher Stevens</td></tr>
+      <tr><td class="num">12</td><td>Jeff Myers Jr.</td><td>John Locigno</td></tr>
+      <tr><td class="num">13</td><td>Jim Brown</td><td>George Hahn</td></tr>
+      <tr><td class="num">14</td><td>JAM</td><td>Ross Locigno</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /sheet -->
+
+<footer>Cross Creek 2026</footer>
+
+<script>
+/* ===== add to home screen ===== */
+let deferredPrompt = null;
+const installBtn = document.getElementById("installBtn");
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferredPrompt = e; });
+installBtn.addEventListener("click", () => {
+  if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; }
+  else document.getElementById("iosHow").classList.toggle("show"); /* iOS Safari has no install prompt — show the how-to instead */
+});
+/* already installed? no need for the button */
+if (matchMedia("(display-mode: standalone)").matches || navigator.standalone) installBtn.style.display = "none";
+
+/* ===== service worker (offline + installability) ===== */
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
+</script>
+</body>
+</html>
