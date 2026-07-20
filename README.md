@@ -5,21 +5,25 @@ printed pairings sheet. Hosted on GitHub Pages; installable to a phone's home sc
 
 ## Updating for a new pairing
 
-1. **The page** — edit `index.html`. Everything is static; look for `<!-- EDIT -->` comments.
-   Each event is one `.event` card: the header holds the name, `(x holes)`, and the tee time;
-   the table rows hold the groups; the `.gam` footer holds the buy-in and details.
-   Seniors get ` <span class="sr">SR</span>` after their rank tag.
-   The page can also be regenerated from a Toolkit spreadsheet's embedded save data —
-   the current content came from `JeffsPairings.xlsx` (Cross creek 2026, iCloud Drive).
-2. **The downloads** — replace the two files in `assets/`:
-   - `assets/locigno-outing.pdf` — the formatted PDF from the Commissioners Toolkit
-   - `assets/locigno-outing.xlsx` — the spreadsheet from the Commissioners Toolkit
-   (Both currently contain placeholders.)
-3. Commit and push — Pages redeploys automatically, and the service worker picks up
-   fresh content on the next visit (network-first, cache only as offline fallback).
+1. Save the spreadsheet and the formatted PDF from the Commissioners Toolkit.
+2. Drop them into `assets/` with these exact names (they're also the download links):
+   - `assets/locigno-outing.xlsx`
+   - `assets/locigno-outing.pdf`
+3. Commit and push. A GitHub Action decodes the save data the Toolkit embeds in the
+   spreadsheet's hidden `_meta` sheet, regenerates `index.html` from it, and commits
+   the result — Pages redeploys automatically. No hand-editing needed.
+
+The Action also reruns when `tools/` changes, and can be fired manually from the
+Actions tab (workflow_dispatch). If the spreadsheet has no save data (not a Toolkit
+export), the run fails loudly instead of publishing a stale page.
+
+To tweak the page's look, edit `tools/template.html` (the `@@...@@` tokens are filled
+by `tools/build.py`) — or regenerate locally with `python3 tools/build.py` (stdlib only).
 
 ## Layout
 
-- `index.html` — the whole page, self-contained styles and scripts
+- `index.html` — the generated page (don't edit by hand; it gets overwritten)
+- `tools/build.py`, `tools/template.html` — the generator and its page template
+- `.github/workflows/build.yml` — the drop-a-spreadsheet automation
 - `manifest.webmanifest`, `sw.js`, `icons/` — the PWA bits (install + offline)
 - `assets/` — logo plus the downloadable PDF and spreadsheet

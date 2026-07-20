@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Locigno Outing — Pairings &amp; Tee Times</title>
+<meta name="description" content="Cross Creek Locigno Outing — pairings, groups, and tee times">
+<meta name="theme-color" content="#1e3a2f">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Outing">
+<style>
+  :root{
+    --ink:#1c1c1c;
+    --fair:#2f6b45;
+    --gold:#a8843c;
+    --red:#7a2f22;
+    --line:#c9c4b4;
+    --line-soft:#e2ddcb;
+    --paper:#eef0e6;
+    --head-bg:#f2efe3;
+    --row-alt:#faf8ef;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Georgia,"Times New Roman",serif;background:var(--paper);color:var(--ink);line-height:1.45}
+
+  /* ===== top action bar ===== */
+  .actions{
+    position:sticky;top:0;z-index:10;
+    display:flex;justify-content:center;flex-wrap:wrap;gap:8px;
+    padding:10px 12px;
+    background:rgba(238,240,230,.94);
+    border-bottom:1px solid var(--line);
+    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  }
+  .abtn{
+    font-family:Verdana,sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    background:var(--fair);color:#fff;border:none;border-radius:3px;
+    padding:10px 16px;cursor:pointer;text-decoration:none;display:inline-block;
+    box-shadow:0 2px 0 #1e4a2f;
+  }
+  .abtn:active{transform:translateY(1px);box-shadow:none}
+  .ios-how{
+    display:none;max-width:820px;margin:10px auto 0;
+    background:#fff8e4;border:1px solid var(--gold);border-radius:3px;
+    padding:10px 14px;font-size:14px;font-style:italic;color:#6b5420;
+  }
+  .ios-how.show{display:block}
+
+  /* ===== the sheet ===== */
+  .sheet{max-width:860px;margin:16px auto 40px;background:#fff;padding:28px 20px 32px;border:1px solid var(--line);border-radius:4px}
+  @media(min-width:600px){.sheet{padding:36px 36px 40px}}
+  .masthead{text-align:center;padding-bottom:10px;border-bottom:3px double var(--fair);margin-bottom:14px}
+  .masthead img{width:min(320px,70%);height:auto}
+  .masthead .sub{
+    font-family:Verdana,sans-serif;font-size:11px;letter-spacing:.3em;text-transform:uppercase;
+    color:var(--fair);margin-top:8px;
+  }
+
+  .title{
+    font-family:Verdana,sans-serif;font-size:13px;font-weight:bold;letter-spacing:.25em;
+    text-transform:uppercase;color:#fff;background:var(--fair);
+    padding:7px 14px;border-radius:2px;margin-top:22px;
+  }
+  .day{
+    font-family:Verdana,sans-serif;font-size:12px;font-weight:bold;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--fair);border-bottom:2px solid var(--fair);
+    padding:12px 0 4px;margin-bottom:8px;
+    display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;
+  }
+  .daykey{font-weight:normal;letter-spacing:.08em;font-size:11px;color:#444;text-transform:none;white-space:nowrap}
+  .sr{font-family:Verdana,sans-serif;font-size:10px;font-weight:bold;color:var(--gold);letter-spacing:.05em;white-space:nowrap}
+
+  .event{border:1px solid var(--line);border-radius:4px;margin-bottom:10px;overflow:hidden}
+  .ehead{
+    display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+    background:var(--head-bg);border-bottom:1px solid var(--line);padding:8px 14px;
+  }
+  .ename{font-size:17px;font-weight:bold;color:var(--fair)}
+  .holes{font-family:Verdana,sans-serif;font-size:10px;font-weight:normal;color:#8a8467;letter-spacing:.05em;white-space:nowrap}
+  .time{font-family:Verdana,sans-serif;font-size:12px;letter-spacing:.1em;color:#444;white-space:nowrap}
+  .details{font-size:14px;font-style:italic;color:#444;padding:7px 14px;border-bottom:1px solid var(--line-soft)}
+
+  .tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{width:100%;border-collapse:collapse;font-size:15px;min-width:540px}
+  td,th{padding:6px 12px;text-align:left;vertical-align:top}
+  tbody tr:nth-child(even){background:var(--row-alt)}
+  tbody tr+tr td{border-top:1px solid var(--line-soft)}
+  td.num{font-family:Verdana,sans-serif;font-size:11px;color:#9a2c1e;width:34px;white-space:nowrap}
+  .rk{font-family:Verdana,sans-serif;font-size:9px;color:#8a8467;letter-spacing:.05em;white-space:nowrap}
+  .roomies table, .ranks-note{min-width:0}
+
+  .gam{border-top:1px solid var(--line-soft);padding:7px 14px;display:flex;gap:12px;align-items:baseline}
+  .buyin{font-family:Verdana,sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--red);white-space:nowrap}
+  .gamdet{flex:1;font-size:14px;font-style:italic;color:#444}
+  .total{
+    text-align:right;font-family:Verdana,sans-serif;font-size:12px;font-weight:bold;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin:8px 2px 0;
+  }
+
+  .ranks{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:8px}
+  @media(max-width:700px){.ranks{grid-template-columns:repeat(2,1fr)}}
+  .rankcol{border:1px solid var(--line);border-radius:4px;overflow:hidden}
+  .rankcol h4{
+    font-family:Verdana,sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--fair);background:var(--head-bg);border-bottom:1px solid var(--line);padding:6px 10px;
+  }
+  .rankcol ol{margin:0;padding:6px 10px 8px 32px;font-size:14px}
+  .rankcol li{padding:2px 0}
+
+  footer{
+    max-width:860px;margin:0 auto 30px;padding-top:8px;border-top:1px solid var(--line);
+    text-align:center;font-family:Verdana,sans-serif;font-size:10px;letter-spacing:.2em;
+    text-transform:uppercase;color:#999;
+  }
+</style>
+</head>
+<body>
+
+<div class="actions">
+  <button class="abtn" id="installBtn">Add to Home Screen</button>
+  <a class="abtn" href="assets/locigno-outing.pdf" download>Download PDF</a>
+  <a class="abtn" href="assets/locigno-outing.xlsx" download>Download Spreadsheet</a>
+</div>
+<div class="ios-how" id="iosHow">On iPhone: open this page in <b>Safari</b>, tap the <b>Share</b> button, then choose <b>&ldquo;Add to Home Screen.&rdquo;</b></div>
+
+<div class="sheet">
+
+  <div class="masthead">
+    <img src="assets/cross-creek-logo.png" alt="Cross Creek">
+    <!-- EDIT: the year -->
+    <div class="sub">Locigno Outing 2026 &middot; Pairings &amp; Tee Times</div>
+  </div>
+
+  <!-- ============================ ROOMIES ============================ -->
+  <div class="title" style="margin-top:0;margin-bottom:8px">Roomies</div>
+  <div class="event roomies">
+    <table>
+      <tbody>
+@@ROOM_ROWS@@
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ============================ RANKINGS ============================ -->
+  <div class="title">Rankings</div>
+  <div class="ranks">
+@@RANK_COLS@@
+  </div>
+
+  <div class="title">Pairings</div>
+
+@@PAIRINGS@@
+
+</div><!-- /sheet -->
+
+<footer>Cross Creek 2026</footer>
+
+<script>
+/* ===== add to home screen ===== */
+let deferredPrompt = null;
+const installBtn = document.getElementById("installBtn");
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferredPrompt = e; });
+installBtn.addEventListener("click", () => {
+  if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; }
+  else document.getElementById("iosHow").classList.toggle("show"); /* iOS Safari has no install prompt — show the how-to instead */
+});
+/* already installed? no need for the button */
+if (matchMedia("(display-mode: standalone)").matches || navigator.standalone) installBtn.style.display = "none";
+
+/* ===== service worker (offline + installability) ===== */
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+name: Build site from spreadsheet
+
+# Drop a new Toolkit spreadsheet at assets/locigno-outing.xlsx and push —
+# this regenerates index.html from its embedded save data and commits it,
+# which redeploys GitHub Pages automatically.
+on:
+  push:
+    branches: [main]
+    paths:
+      - assets/locigno-outing.xlsx
+      - tools/**
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Regenerate index.html
+        run: python3 tools/build.py
+
+      - name: Commit the regenerated page
+        run: |
+          if git diff --quiet index.html; then
+            echo "Page already up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Regenerate site from spreadsheet"
+          git push
