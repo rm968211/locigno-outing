@@ -19,7 +19,9 @@ self.addEventListener("activate", e => {
 self.addEventListener("fetch", e => {
   if (e.request.method !== "GET") return;
   e.respondWith(
-    fetch(e.request).then(res => {
+    /* no-cache: always revalidate with the server instead of trusting the
+       local HTTP cache — a pushed update reaches clients on their next load */
+    fetch(e.request, { cache: "no-cache" }).then(res => {
       if (res.ok) {
         const copy = res.clone();
         caches.open(CACHE).then(c => c.put(e.request, copy));
