@@ -91,9 +91,9 @@ def gam_foot(key):
     dd = f'<div class="gamdet">{esc(det).replace(chr(10), "<br>")}</div>' if det else ""
     return f'    <div class="gam">{buy}{dd}</div>\n'
 
-def card(name, holes, time, body, key, details=""):
+def card(name, holes, time, body, key, details="", extra=""):
     t = f'<span class="time">{time}</span>' if time else ""
-    h = f'  <div class="event">\n    <div class="ehead"><span class="ename">{esc(name)} <span class="holes">({holes} holes)</span></span>{t}</div>\n'
+    h = f'  <div class="event">\n    <div class="ehead"><span class="ename">{esc(name)} <span class="holes">({holes} holes)</span></span>{extra}{t}</div>\n'
     if details:
         h += f'    <div class="details">{esc(details).replace(chr(10), "<br>")}</div>\n'
     if body:
@@ -117,19 +117,20 @@ def twoman_body():
     return "\n".join(rows)
 
 pair, last_day = "", None
-key_html = '<span class="daykey"><span class="sr">SR</span> = plays the senior tees &middot; Slivo Scramble</span>' if SENIORS else ""
+# the key rides the Slivo Scramble's own header — the only event on senior tees
+key_html = '<span class="daykey"><span class="sr">SR</span> = plays the senior tees</span>' if SENIORS else ""
 for key in TEE["seq"]:
     day = TEE["day"][key]
     first = DAYS[day] != last_day
     if first:
-        pair += f'  <div class="day"><span>{DAYS[day]}</span>{key_html if last_day is None else ""}</div>\n'
+        pair += f'  <div class="day"><span>{DAYS[day]}</span></div>\n'
         last_day = DAYS[day]
     time = fmt_tee(TEE.get("start", {}).get(str(day), "")) if first else ""
     if key == "tm":
         pair += card(TWOMAN["name"], 9, time, twoman_body(), "tm")
     else:
         r = int(key[1:])
-        pair += card(EVENTS[r], 18, time, fourman_body(r), key)
+        pair += card(EVENTS[r], 18, time, fourman_body(r), key, extra=key_html if r == 0 else "")
 
 pair += '  <div class="day"><span>Tuesday</span></div>\n'
 pair += card(TUESDAY["name"], 18, fmt_tee(TUESDAY.get("start", "")), "", "tu", details=TUESDAY.get("desc", ""))
