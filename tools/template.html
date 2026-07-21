@@ -26,6 +26,35 @@
     --tag:#8a8467;
     --num:#9a2c1e;
     --bar:rgba(238,240,230,.94);
+    --fair-ink:#2f6b45;
+    --btn-bg:#2f6b45;
+    --btn-ink:#fff;
+    --note-bg:#fff8e4;
+    --note-ink:#6b5420;
+  }
+  /* ===== dark mode — palette lifted from how Dark Reader renders the site =====
+     light is the default; the little moon/sun button switches, and the choice
+     sticks around (localStorage) for the next visit */
+  :root[data-theme="dark"]{
+    --ink:#e8e6e3;
+    --fair:#2c5a3e;
+    --fair-ink:#84b795;
+    --gold:#c9a24f;
+    --red:#c56b5c;
+    --line:#4a463d;
+    --line-soft:#34302a;
+    --paper:#181a1b;
+    --head-bg:#262219;
+    --row-alt:#292418;
+    --sheet:#1c1e1f;
+    --muted:#c8c2b4;
+    --tag:#a49d85;
+    --num:#bd6b4d;
+    --bar:rgba(24,26,27,.94);
+    --btn-bg:#252827;
+    --btn-ink:#e8e6e3;
+    --note-bg:#2b2413;
+    --note-ink:#d8c58c;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:Georgia,"Times New Roman",serif;background:var(--paper);color:var(--ink);line-height:1.45}
@@ -39,17 +68,23 @@
   }
   .abtn{
     font-family:Verdana,sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-    background:var(--fair);color:#fff;border:none;border-radius:3px;
+    background:var(--btn-bg);color:var(--btn-ink);border:none;border-radius:3px;
     padding:10px 16px;cursor:pointer;text-decoration:none;display:inline-block;
     box-shadow:0 2px 0 #1e4a2f;
   }
   .abtn:active{transform:translateY(1px);box-shadow:none}
   .ios-how{
     display:none;max-width:820px;margin:10px auto 0;
-    background:#fff8e4;border:1px solid var(--gold);border-radius:3px;
-    padding:10px 14px;font-size:14px;font-style:italic;color:#6b5420;
+    background:var(--note-bg);border:1px solid var(--gold);border-radius:3px;
+    padding:10px 14px;font-size:14px;font-style:italic;color:var(--note-ink);
   }
   .ios-how.show{display:block}
+  .theme-btn{
+    width:36px;height:36px;border-radius:50%;flex:0 0 auto;
+    border:1px solid var(--line);background:transparent;color:var(--muted);
+    font-size:16px;line-height:1;padding:0;cursor:pointer;align-self:center;
+  }
+  .theme-btn:hover{color:var(--fair-ink);border-color:var(--fair-ink)}
 
   /* ===== the sheet ===== */
   .sheet{max-width:860px;margin:16px auto 40px;background:var(--sheet);padding:28px 20px 32px;border:1px solid var(--line);border-radius:4px}
@@ -58,7 +93,7 @@
   .masthead img{width:min(320px,70%);height:auto}
   .masthead .sub{
     font-family:Verdana,sans-serif;font-size:11px;letter-spacing:.3em;text-transform:uppercase;
-    color:var(--fair);margin-top:8px;
+    color:var(--fair-ink);margin-top:8px;
   }
 
   .title{
@@ -68,7 +103,7 @@
   }
   .day{
     font-family:Verdana,sans-serif;font-size:12px;font-weight:bold;letter-spacing:.2em;
-    text-transform:uppercase;color:var(--fair);border-bottom:2px solid var(--fair);
+    text-transform:uppercase;color:var(--fair-ink);border-bottom:2px solid var(--fair);
     padding:12px 0 4px;margin-bottom:8px;
     display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;
   }
@@ -80,7 +115,7 @@
     display:flex;justify-content:space-between;align-items:baseline;gap:10px;
     background:var(--head-bg);border-bottom:1px solid var(--line);padding:8px 14px;
   }
-  .ename{font-size:17px;font-weight:bold;color:var(--fair)}
+  .ename{font-size:17px;font-weight:bold;color:var(--fair-ink)}
   .holes{font-family:Verdana,sans-serif;font-size:10px;font-weight:normal;color:var(--tag);letter-spacing:.05em;white-space:nowrap}
   .time{font-family:Verdana,sans-serif;font-size:12px;letter-spacing:.1em;color:var(--muted);white-space:nowrap}
   .details{font-size:14px;font-style:italic;color:var(--muted);padding:7px 14px;border-bottom:1px solid var(--line-soft)}
@@ -108,7 +143,7 @@
   .rankcol{border:1px solid var(--line);border-radius:4px;overflow:hidden}
   .rankcol h4{
     font-family:Verdana,sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
-    color:var(--fair);background:var(--head-bg);border-bottom:1px solid var(--line);padding:6px 10px;
+    color:var(--fair-ink);background:var(--head-bg);border-bottom:1px solid var(--line);padding:6px 10px;
   }
   .rankcol ol{margin:0;padding:6px 10px 8px 32px;font-size:14px}
   .rankcol li{padding:2px 0}
@@ -126,6 +161,7 @@
   <button class="abtn" id="installBtn">Add to Home Screen</button>
   <a class="abtn" href="assets/locigno-outing.pdf" download>Download PDF</a>
   <a class="abtn" href="assets/locigno-outing.xlsx" download>Download Spreadsheet</a>
+  <button class="theme-btn" id="themeBtn" aria-label="Switch between light and dark mode">&#9789;</button>
 </div>
 <div class="ios-how" id="iosHow">On iPhone: open this page in <b>Safari</b>, tap the <b>Share</b> button, then choose <b>&ldquo;Add to Home Screen.&rdquo;</b></div>
 
@@ -162,6 +198,26 @@
 <footer>Cross Creek 2026</footer>
 
 <script>
+/* ===== theme: light by default; the button switches and the choice is
+   remembered for next time ===== */
+const themeBtn = document.getElementById("themeBtn");
+const themeMeta = document.querySelector('meta[name="theme-color"]');
+try{ if(localStorage.getItem("theme") === "dark") document.documentElement.dataset.theme = "dark"; }catch(e){}
+function applyTheme(){
+  const dark = document.documentElement.dataset.theme === "dark";
+  themeBtn.innerHTML = dark ? "&#9788;" : "&#9789;";
+  themeBtn.title = dark ? "Switch to light mode" : "Switch to dark mode";
+  themeMeta.content = dark ? "#181a1b" : "#1e3a2f";
+}
+themeBtn.addEventListener("click", () => {
+  const dark = document.documentElement.dataset.theme !== "dark";
+  if(dark) document.documentElement.dataset.theme = "dark";
+  else delete document.documentElement.dataset.theme;
+  try{ localStorage.setItem("theme", dark ? "dark" : "light"); }catch(e){}
+  applyTheme();
+});
+applyTheme();
+
 /* ===== add to home screen ===== */
 let deferredPrompt = null;
 const installBtn = document.getElementById("installBtn");
