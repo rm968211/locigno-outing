@@ -33,7 +33,8 @@
     --note-ink:#6b5420;
   }
   /* ===== dark mode — palette lifted from how Dark Reader renders the site =====
-     auto-follows the system setting; the little moon/sun button pins a choice */
+     light is the default; the little moon/sun button switches, and the choice
+     sticks around (localStorage) for the next visit */
   :root[data-theme="dark"]{
     --ink:#e8e6e3;
     --fair:#2c5a3e;
@@ -54,29 +55,6 @@
     --btn-ink:#e8e6e3;
     --note-bg:#2b2413;
     --note-ink:#d8c58c;
-  }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-    --ink:#e8e6e3;
-    --fair:#2c5a3e;
-    --fair-ink:#84b795;
-    --gold:#c9a24f;
-    --red:#c56b5c;
-    --line:#4a463d;
-    --line-soft:#34302a;
-    --paper:#181a1b;
-    --head-bg:#262219;
-    --row-alt:#292418;
-    --sheet:#1c1e1f;
-    --muted:#c8c2b4;
-    --tag:#a49d85;
-    --num:#bd6b4d;
-    --bar:rgba(24,26,27,.94);
-    --btn-bg:#252827;
-    --btn-ink:#e8e6e3;
-    --note-bg:#2b2413;
-    --note-ink:#d8c58c;
-    }
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:Georgia,"Times New Roman",serif;background:var(--paper);color:var(--ink);line-height:1.45}
@@ -220,31 +198,24 @@
 <footer>Cross Creek 2026</footer>
 
 <script>
-/* ===== theme: follow the system by default; the button pins a choice.
-   Picking the mode the system already uses just clears the pin. ===== */
-const mql = matchMedia("(prefers-color-scheme: dark)");
+/* ===== theme: light by default; the button switches and the choice is
+   remembered for next time ===== */
 const themeBtn = document.getElementById("themeBtn");
 const themeMeta = document.querySelector('meta[name="theme-color"]');
-try{ const saved = localStorage.getItem("theme"); if(saved) document.documentElement.dataset.theme = saved; }catch(e){}
-function effectiveDark(){
-  const t = document.documentElement.dataset.theme;
-  return t ? t === "dark" : mql.matches;
-}
+try{ if(localStorage.getItem("theme") === "dark") document.documentElement.dataset.theme = "dark"; }catch(e){}
 function applyTheme(){
-  const dark = effectiveDark();
+  const dark = document.documentElement.dataset.theme === "dark";
   themeBtn.innerHTML = dark ? "&#9788;" : "&#9789;";
   themeBtn.title = dark ? "Switch to light mode" : "Switch to dark mode";
   themeMeta.content = dark ? "#181a1b" : "#1e3a2f";
 }
 themeBtn.addEventListener("click", () => {
-  const wantDark = !effectiveDark();
-  try{
-    if(wantDark === mql.matches){ delete document.documentElement.dataset.theme; localStorage.removeItem("theme"); }
-    else { document.documentElement.dataset.theme = wantDark ? "dark" : "light"; localStorage.setItem("theme", wantDark ? "dark" : "light"); }
-  }catch(e){ document.documentElement.dataset.theme = wantDark ? "dark" : "light"; }
+  const dark = document.documentElement.dataset.theme !== "dark";
+  if(dark) document.documentElement.dataset.theme = "dark";
+  else delete document.documentElement.dataset.theme;
+  try{ localStorage.setItem("theme", dark ? "dark" : "light"); }catch(e){}
   applyTheme();
 });
-mql.addEventListener("change", applyTheme);
 applyTheme();
 
 /* ===== add to home screen ===== */
