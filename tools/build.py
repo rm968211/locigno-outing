@@ -73,11 +73,12 @@ def find(nm):
         if nm in COLS[c]: return c, COLS[c].index(nm)
     return None
 
-def tag(nm):
+def tag(nm, sr=False):
     p = find(nm)
     out = esc(nm)
     if p: out += f' <span class="rk">{LETTERS[p[0]]}{p[1]+1}</span>'
-    if nm in SENIORS: out += ' <span class="sr">SR</span>'
+    # senior tees are only played in the Slivo Scramble — callers opt in
+    if sr and nm in SENIORS: out += ' <span class="sr">SR</span>'
     # one atomic unit — a player's name, rank, and SR never wrap apart;
     # two-man cells can only break at the & between partners
     return f'<span class="player">{out}</span>'
@@ -102,7 +103,7 @@ def card(name, holes, time, body, key, details=""):
 def fourman_body(r):
     rows = []
     for k, gi in enumerate(TEE["perm"][f"e{r}"]):
-        tds = "".join(f'<td>{tag(COLS[c][TEAMS[r][gi][c]])}</td>' for c in range(4))
+        tds = "".join(f'<td>{tag(COLS[c][TEAMS[r][gi][c]], sr=(r == 0))}</td>' for c in range(4))
         rows.append(f'      <tr><td class="num">{k+1}</td>{tds}</tr>')
     return "\n".join(rows)
 
@@ -116,7 +117,7 @@ def twoman_body():
     return "\n".join(rows)
 
 pair, last_day = "", None
-key_html = '<span class="daykey"><span class="sr">SR</span> = plays the senior tees</span>' if SENIORS else ""
+key_html = '<span class="daykey"><span class="sr">SR</span> = plays the senior tees &middot; Slivo Scramble</span>' if SENIORS else ""
 for key in TEE["seq"]:
     day = TEE["day"][key]
     first = DAYS[day] != last_day
