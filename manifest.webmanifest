@@ -1,7 +1,7 @@
 {
   "name": "Locigno Outing",
   "short_name": "Outing",
-  "description": "Cross Creek Locigno Outing — pairings, groups, and tee times",
+  "description": "Cross Creek Locigno Outing: pairings, groups, and tee times",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
